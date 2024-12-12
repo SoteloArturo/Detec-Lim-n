@@ -1,0 +1,57 @@
+# Instale la herramienta de etiquetado:
+pip install labelme
+
+# Me pidio actualizar pip:
+python.exe -m pip install --upgrade pip
+
+# Ejecute labelme:
+labelme
+
+# Instale labelme2yolo para convertir Json a Yolo:
+pip install labelme2yolo
+
+# Convierti mis archivos Json a Yolo:
+labelme2yolo --json_dir C:\Users\escor\OneDrive\Desktop\DETECTORDEHUANGLONGBING\DETECTORHLB\HLB
+# Instale ultralytics:
+pip install ultralytics
+
+# Verifique mi tarjeta grafica:
+python
+import torch
+torch.cuda.is_available()
+
+# Entrene mi red neuronal:
+yolo task=detect mode=train epochs=10 data=dataset.yaml model=yolo11l.pt imgsz=640 batch=2
+
+ # Importe de mi libreria
+from ultralytics import YOLO
+import cv2
+
+# que lea mi modelo
+model = YOLO("DETECTORHLB.pt")
+
+# Realizar VideoCaptura
+cap = cv2.VideoCapture(1)
+
+# Bucle
+while True:
+    # Asi nuestro las fotogramas
+    ret, frame = cap.read()
+
+    # Lee resultados
+    resultados = model.predict(frame, imgsz = 640, conf = 0.87)
+
+    # Mostramos resultados
+    anotaciones = resultados[0].plot()
+
+    # Mostramos nuestros fotogramas
+    cv2.imshow("DETECCION", anotaciones)
+
+    # Cerrar mi programa
+    if cv2.waitKey(1) == 27:
+        break
+
+
+
+cap.release()
+cv2.destroyAllWindows()
